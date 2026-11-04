@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Identity Badge</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Times/Bodoni equivalent for serif title + Inter for crisp text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          },
+          colors: {
+            badgeGreen: '#a1d892',
+            ringGreen: '#78c864',
+            cardBg: '#edeff2',
+            btnGray: '#83878b',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f2f2f6;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    /* iOS Alert Spring Animation */
+    .ios-pop-in {
+      animation: iosPopIn 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+    }
+    
+    .ios-backdrop-in {
+      animation: iosBackdrop 0.2s ease-out forwards;
+    }
+
+    @keyframes iosPopIn {
+      0% { opacity: 0; transform: scale(1.12); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes iosBackdrop {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Frosted glass style for iOS popup */
+    .ios-glass {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+    }
+
+    /* Subtle texture on background card */
+    .badge-bg {
+      background: #f7f7f9;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-slate-800 antialiased p-0 sm:p-4">
+
+  <!-- Mobile Container Wrapper matching exact photo scale -->
+  <div class="w-full max-w-[430px] badge-bg min-h-[880px] sm:rounded-[48px] shadow-2xl flex flex-col justify-between overflow-hidden relative border border-gray-200/60">
+
+    <!-- Top Status Bar Simulation -->
+    <div class="pt-3 px-8 flex justify-between items-center text-xs font-semibold text-black z-10">
+      <span id="live-time" class="font-semibold text-[15px]">9:41</span>
+      <div class="flex items-center space-x-2 text-[13px]">
+        <i class="fa-solid fa-signal"></i>
+        <i class="fa-solid fa-wifi"></i>
+        <i class="fa-solid fa-battery-full text-sm"></i>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="px-7 pt-4 pb-10 flex-1 flex flex-col items-center justify-between z-10">
+
+      <!-- Header Title -->
+      <div class="text-center mt-2 mb-4">
+        <h1 class="font-serif text-[32px] font-medium text-black tracking-tight leading-tight">Identity Badge</h1>
+      </div>
+
+      <!-- Center Profile Image with Green Ring -->
+      <div class="relative my-2 flex justify-center items-center">
+        <!-- Exact Vibrant Green Ring -->
+        <div class="w-[260px] h-[260px] rounded-full p-[4px] border-[4px] border-[#78c864] flex items-center justify-center shadow-xs">
+          <div class="w-full h-full rounded-full overflow-hidden bg-gray-900 relative">
+            <!-- Exact Portrait Photo -->
+            <img 
+              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80" 
+              alt="Ali Abdelaziz" 
+              class="w-full h-full object-cover object-center"
+              style="filter: contrast(1.05) brightness(0.92);"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Resident Details Card -->
+      <div class="w-full bg-[#edeff2] rounded-[24px] overflow-hidden shadow-xs mt-3 mb-4">
+        
+        <!-- Header Green Banner: Username & Type -->
+        <div class="bg-[#a1d892] px-5 py-3.5 flex justify-between items-center">
+          <div class="flex flex-col">
+            <span class="text-[13px] text-gray-700 font-normal leading-tight">Username</span>
+            <span class="text-[18px] font-bold text-black leading-snug tracking-tight">Ali Abdelaziz</span>
+          </div>
+          <div class="flex flex-col items-end">
+            <span class="text-[13px] text-gray-700 font-normal leading-tight">Type</span>
+            <span class="text-[18px] font-bold text-black leading-snug tracking-tight">Resident</span>
+          </div>
+        </div>
+
+        <!-- Body Details: Unit & QR Code -->
+        <div class="p-5 flex justify-between items-center bg-[#edeff2]">
+          <div class="flex flex-col max-w-[75%]">
+            <span class="text-[14px] text-gray-500 font-normal">Unit</span>
+            <span class="text-[17px] font-semibold text-black leading-snug mt-0.5">Boulevard Residence 2-D-3-5</span>
+          </div>
+          
+          <!-- QR Code Button -->
+          <button onclick="toggleQRModal()" class="w-12 h-12 bg-white/70 rounded-full flex items-center justify-center border border-gray-300/50 active:scale-95 transition-transform cursor-pointer">
+            <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Action Button: Open Gate -->
+      <button 
+        id="openGateBtn"
+        onclick="startGateProcess()" 
+        class="w-full bg-[#83878b] hover:bg-[#74787c] active:bg-[#606367] text-white font-medium text-[19px] py-4 px-4 rounded-[16px] shadow-sm active:scale-[0.98] transition-all duration-150 cursor-pointer flex items-center justify-center">
+        <span>Open Gate</span>
+      </button>
+
+      <!-- Fine Warning Text -->
+      <p class="text-[13px] text-center text-gray-900 font-normal px-2 mt-4 leading-tight">
+        Any proven manipulation of this identity will result in a EGP 30,000 fine and user suspension.
+      </p>
+
+      <!-- Footer Branding Logo -->
+      <div class="mt-8 text-center flex flex-col items-center">
+        <span class="font-serif text-[22px] font-semibold tracking-[0.2em] text-black leading-none uppercase">EMAAR</span>
+        <span class="text-[10px] tracking-[0.35em] text-gray-500 font-medium mt-1 uppercase">MISR</span>
+      </div>
+
+    </div>
+
+    <!-- Authentic iOS Alert Popup Modal -->
+    <div id="gateModal" class="hidden absolute inset-0 bg-black/40 z-50 flex items-center justify-center p-6 ios-backdrop-in">
+      <div class="w-[270px] ios-glass rounded-[18px] shadow-2xl flex flex-col items-center text-center overflow-hidden ios-pop-in border border-white/50">
+        
+        <!-- Countdown View -->
+        <div id="countdownView" class="w-full pt-6 pb-0 flex flex-col items-center">
+          
+          <!-- iOS Loading Spinner / Animated Ring -->
+          <div class="w-10 h-10 mb-3 relative flex items-center justify-center">
+            <div class="w-9 h-9 rounded-full border-3 border-gray-300 border-t-blue-500 animate-spin"></div>
+          </div>
+
+          <!-- Dynamic Text Header -->
+          <h3 id="countdownText" class="text-[17px] font-semibold text-black tracking-tight px-3 mb-1">
+            Opening gate in 3...
+          </h3>
+          <p class="text-[13px] text-gray-500 px-4 mb-4 leading-tight">Please wait near the barrier</p>
+          
+          <!-- iOS Divider Line -->
+          <div class="w-full h-[0.5px] bg-gray-300/80"></div>
+
+          <!-- iOS Cancel Button -->
+          <button onclick="cancelGateProcess()" class="w-full py-3 text-[17px] text-[#007aff] font-normal active:bg-gray-200/50 transition-colors">
+            Cancel
+          </button>
+        </div>
+
+        <!-- iOS Success View -->
+        <div id="successView" class="hidden w-full pt-6 pb-0 flex flex-col items-center">
+          <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mb-3">
+            <i class="fa-solid fa-check"></i>
+          </div>
+
+          <h3 class="text-[18px] font-semibold text-black tracking-tight mb-1">
+            Gate Opened!
+          </h3>
+          <p class="text-[13px] text-gray-500 px-4 mb-5 leading-tight">Access granted to Boulevard Residence</p>
+          
+          <!-- iOS Divider Line -->
+          <div class="w-full h-[0.5px] bg-gray-300/80"></div>
+
+          <button onclick="closeGateModal()" class="w-full py-3 text-[17px] text-[#007aff] font-semibold active:bg-gray-200/50 transition-colors">
+            Done
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="hidden absolute inset-0 bg-black/40 z-50 flex items-center justify-center p-6 ios-backdrop-in">
+      <div class="w-[280px] ios-glass rounded-[22px] p-6 shadow-2xl flex flex-col items-center text-center ios-pop-in border border-white/50">
+        <h3 class="text-[18px] font-semibold text-black mb-1">Resident Access QR</h3>
+        <p class="text-[12px] text-gray-500 mb-4">Scan at gate scanner for automatic entry</p>
+
+        <div class="p-3 bg-white rounded-2xl shadow-sm mb-4 border border-gray-100">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=EMAAR_BOULEVARD_2D35_ALI" alt="QR Code" class="w-44 h-44 object-contain">
+        </div>
+
+        <button onclick="toggleQRModal()" class="w-full bg-[#007aff] text-white font-medium py-2.5 rounded-xl text-[15px] active:opacity-80 transition-opacity">
+          Done
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Live time clock update
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      hours = hours % 12 || 12;
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      const liveTime = document.getElementById('live-time');
+      if (liveTime) liveTime.textContent = `${hours}:${minutes}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    let countdownInterval = null;
+    let autoCloseTimeout = null;
+
+    // Start 3-2-1 Countdown Process
+    function startGateProcess() {
+      const modal = document.getElementById('gateModal');
+      const countdownView = document.getElementById('countdownView');
+      const successView = document.getElementById('successView');
+      const countdownText = document.getElementById('countdownText');
+
+      if (!modal || !countdownView || !successView || !countdownText) return;
+
+      countdownView.classList.remove('hidden');
+      successView.classList.add('hidden');
+      modal.classList.remove('hidden');
+
+      let count = 3;
+      countdownText.textContent = `Opening gate in ${count}...`;
+
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (autoCloseTimeout) clearTimeout(autoCloseTimeout);
+
+      countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownText.textContent = `Opening gate in ${count}...`;
+        } else {
+          clearInterval(countdownInterval);
+          showSuccessState();
+        }
+      }, 1000);
+    }
+
+    // Display iOS Success Alert State
+    function showSuccessState() {
+      const countdownView = document.getElementById('countdownView');
+      const successView = document.getElementById('successView');
+
+      if (countdownView && successView) {
+        countdownView.classList.add('hidden');
+        successView.classList.remove('hidden');
+      }
+
+      if (autoCloseTimeout) clearTimeout(autoCloseTimeout);
+      autoCloseTimeout = setTimeout(() => {
+        closeGateModal();
+      }, 2200);
+    }
+
+    // Cancel Process
+    function cancelGateProcess() {
+      if (countdownInterval) clearInterval(countdownInterval);
+      if (autoCloseTimeout) clearTimeout(autoCloseTimeout);
+      closeGateModal();
+    }
+
+    // Dismiss Gate Modal
+    function closeGateModal() {
+      const modal = document.getElementById('gateModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    // Toggle QR Pass Modal
+    function toggleQRModal() {
+      const qrModal = document.getElementById('qrModal');
+      if (qrModal) qrModal.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
